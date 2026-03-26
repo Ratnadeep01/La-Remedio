@@ -7,7 +7,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const migrate = async () => {
-  const client = await pool.connect();
+  let client;
+  let retries = 10;
+  let delay = 5000;
+
+  while (retries > 0) {
+    try {
+      client = await pool.connect();
+      console.log('✅ Connected to database for migration');
+      break;
+    } catch (err) {
+      retries -= 1;
+      console.warn(`⏳ Database connection failed. Retrying... (${retries} left). Error: ${err.message}`);
+      if (retries === 0) throw err;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
 
   try {
     const migrationsDir = path.join(__dirname, 'migrations');
