@@ -17,10 +17,6 @@ services:
         generateValue: true
       - key: PORT
         value: 10000
-    disk:
-      name: uploads-storage
-      mountPath: /opt/render/project/src/src/uploads
-      sizeGB: 1
 
 databases:
   - name: salon-admin-db
