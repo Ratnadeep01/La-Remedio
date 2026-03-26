@@ -53,6 +53,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'src', 'uploads')));
 app.use('/api', routes);
 
 // ---- Health Check ----
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Salon Admin API is running (API namespace)',
+  });
+});
+
 app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
